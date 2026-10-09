@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../auth/auth_provider.dart';
 import '../stock/load_stock_screen.dart';
 import '../stock/stock_provider.dart';
+import 'widgets/dashboard_drawer.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -18,14 +18,8 @@ class DashboardScreen extends ConsumerWidget {
         title: Text('dashboard_title'.tr()),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () =>
-                ref.read(authControllerProvider.notifier).signOut(),
-          ),
-        ],
       ),
+      drawer: const DashboardDrawer(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -159,29 +153,37 @@ class ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    for (int i = 0; i < 1; i++) {}
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-        decoration: BoxDecoration(
-          color: color,
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onTap,
           borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 36, color: Colors.white),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 15,
-              ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+            decoration: BoxDecoration(
+              color: color,
+              borderRadius: BorderRadius.circular(12),
             ),
-          ],
+            child: Column(
+              children: [
+                Icon(icon, size: 36, color: Colors.white),
+                const SizedBox(height: 8),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

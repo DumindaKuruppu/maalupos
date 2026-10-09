@@ -41,5 +41,15 @@
   "cost_price_empty_error": "விலையை உள்ளிடவும்",
   "add_to_vehicle": "வாகனத்தில் சேர்க்க (Add to Vehicle)",
   "stock_added_success": "இருப்பு வெற்றிகரமாக சேர்க்கப்பட்டது!",
-  "error": "பிழை"
+  "error": "பிழை",
+  "settings": "அமைப்புகள்",
+  "change_language": "மொழியை மாற்று",
+  "english": "English",
+  "sinhala": "සිංහල",
+  "tamil": "தமிழ்",
+  "theme_mode": "தீம் முறை",
+  "light_mode": "வெளிச்சம் (Light)",
+  "dark_mode": "இருண்ட (Dark)",
+  "system_mode": "கணினி (System)",
+  "logout": "வெளியேறு"
 }

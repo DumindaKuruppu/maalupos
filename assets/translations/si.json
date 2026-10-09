@@ -41,5 +41,15 @@
   "cost_price_empty_error": "ගැනුම් මිල දාන්න",
   "add_to_vehicle": "වාහනයට ඇතුළත් කරන්න (Add to Vehicle)",
   "stock_added_success": "තොග එකතු කිරීම සාර්ථකයි!",
-  "error": "දෝෂය"
+  "error": "දෝෂය",
+  "settings": "සැකසුම්",
+  "change_language": "භාෂාව වෙනස් කරන්න",
+  "english": "English (ඉංග්‍රීසි)",
+  "sinhala": "සිංහල",
+  "tamil": "தமிழ் (ටමිල්)",
+  "theme_mode": "තේමා මාදිලිය (Theme)",
+  "light_mode": "ආලෝක (Light)",
+  "dark_mode": "අඳුරු (Dark)",
+  "system_mode": "පද්ධතියේ (System)",
+  "logout": "ඉවත් වන්න (Logout)"
 }

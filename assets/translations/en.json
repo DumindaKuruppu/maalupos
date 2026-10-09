@@ -41,5 +41,15 @@
   "cost_price_empty_error": "Enter cost price",
   "add_to_vehicle": "Add to Vehicle",
   "stock_added_success": "Stock added successfully!",
-  "error": "Error"
+  "error": "Error",
+  "settings": "Settings",
+  "change_language": "Change Language",
+  "english": "English",
+  "sinhala": "සිංහල (Sinhala)",
+  "tamil": "தமிழ் (Tamil)",
+  "theme_mode": "Theme Mode",
+  "light_mode": "Light",
+  "dark_mode": "Dark",
+  "system_mode": "System",
+  "logout": "Logout"
 }
