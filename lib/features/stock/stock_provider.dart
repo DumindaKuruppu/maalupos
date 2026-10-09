@@ -21,45 +21,45 @@ class VehicleStockItem {
   });
 }
 
-// Stream Provider
-final todayStockProvider = StreamProvider<List<VehicleStockItem>>((ref) {
+// Future Provider for Today's Stock (replacing StreamProvider to prevent reload loops)
+final todayStockProvider = FutureProvider<List<VehicleStockItem>>((ref) async {
   final client = ref.watch(supabaseClientProvider);
   final userId = client.auth.currentUser?.id;
 
-  if (userId == null) return Stream.value([]);
+  if (userId == null) return [];
 
   final today = DateTime.now().toIso8601String().split('T')[0];
 
-  return client
+  final response = await client
       .from('vehicle_stock')
-      .stream(primaryKey: ['id'])
+      .select('*, products(name)')
       .eq('user_id', userId)
-      .eq('stock_date', today)
-      .map((data) {
-        return data.map((item) {
-          return VehicleStockItem(
-            id: item['id'],
-            productName: item['products'] != null
-                ? item['products']['name']
-                : 'Unknown',
-            loadedKg: (item['loaded_kg'] as num).toDouble(),
-            currentKg: (item['current_kg'] as num).toDouble(),
-            costPricePerKg: (item['cost_price_per_kg'] as num).toDouble(),
-          );
-        }).toList();
-      });
+      .eq('stock_date', today);
+
+  return (response as List).map((item) {
+    final productMap = item['products'];
+    final productName = productMap is Map ? productMap['name'] : 'Unknown';
+    return VehicleStockItem(
+      id: item['id'],
+      productName: productName,
+      loadedKg: (item['loaded_kg'] as num).toDouble(),
+      currentKg: (item['current_kg'] as num).toDouble(),
+      costPricePerKg: (item['cost_price_per_kg'] as num).toDouble(),
+    );
+  }).toList();
 });
 
 // Stock Controller
 final stockControllerProvider =
     StateNotifierProvider<StockController, AsyncValue<void>>((ref) {
-      return StockController(ref.watch(supabaseClientProvider));
+      return StockController(ref.watch(supabaseClientProvider), ref);
     });
 
 class StockController extends StateNotifier<AsyncValue<void>> {
   final SupabaseClient _client;
+  final Ref _ref;
 
-  StockController(this._client) : super(const AsyncValue.data(null));
+  StockController(this._client, this._ref) : super(const AsyncValue.data(null));
 
   // (Add Stock)
   Future<void> loadStock({
@@ -102,6 +102,9 @@ class StockController extends StateNotifier<AsyncValue<void>> {
         'cost_price_per_kg': costPricePerKg,
         'stock_date': today,
       });
+
+      // Invalidate provider so stock list refreshes with new data
+      _ref.invalidate(todayStockProvider);
     });
   }
 }
