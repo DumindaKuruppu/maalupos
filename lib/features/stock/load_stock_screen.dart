@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -41,7 +42,7 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
         final state = ref.read(stockControllerProvider);
         if (!state.hasError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('තොග එකතු කිරීම සාර්ථකයි!')),
+            SnackBar(content: Text('stock_added_success'.tr())),
           );
           _fishNameController.clear();
           _weightController.clear();
@@ -56,7 +57,7 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
     final stockState = ref.watch(stockControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('උදෑසන මාළු තොග ඇතුළත් කිරීම')),
+      appBar: AppBar(title: Text('load_morning_stock_title'.tr())),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -66,8 +67,9 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
             children: [
               Autocomplete<String>(
                 optionsBuilder: (textEditingValue) {
-                  if (textEditingValue.text.isEmpty)
+                  if (textEditingValue.text.isEmpty) {
                     return const Iterable<String>.empty();
+                  }
                   return _commonFish.where(
                     (fish) => fish.toLowerCase().contains(
                       textEditingValue.text.toLowerCase(),
@@ -81,13 +83,13 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
                       return TextFormField(
                         controller: controller,
                         focusNode: focusNode,
-                        decoration: const InputDecoration(
-                          labelText: 'මාළු වර්ගයේ නම',
-                          prefixIcon: Icon(Icons.set_meal),
-                          border: OutlineInputBorder(),
+                        decoration: InputDecoration(
+                          labelText: 'fish_name_label'.tr(),
+                          prefixIcon: const Icon(Icons.set_meal),
+                          border: const OutlineInputBorder(),
                         ),
                         validator: (v) =>
-                            v!.isEmpty ? 'මාළු වර්ගයක් තෝරන්න/ලියන්න' : null,
+                            v!.isEmpty ? 'fish_name_empty_error'.tr() : null,
                       );
                     },
               ),
@@ -98,12 +100,12 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
                     child: TextFormField(
                       controller: _weightController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'ප්‍රමාණය (Kg)',
-                        prefixIcon: Icon(Icons.scale),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'weight_label'.tr(),
+                        prefixIcon: const Icon(Icons.scale),
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: (v) => v!.isEmpty ? 'Kg ගාණ දාන්න' : null,
+                      validator: (v) => v!.isEmpty ? 'weight_empty_error'.tr() : null,
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -111,12 +113,12 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
                     child: TextFormField(
                       controller: _costController,
                       keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        labelText: 'ගැනුම් මිල 1Kg (Rs.)',
-                        prefixIcon: Icon(Icons.payments),
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: 'cost_price_label'.tr(),
+                        prefixIcon: const Icon(Icons.payments),
+                        border: const OutlineInputBorder(),
                       ),
-                      validator: (v) => v!.isEmpty ? 'ගැනුම් මිල දාන්න' : null,
+                      validator: (v) => v!.isEmpty ? 'cost_price_empty_error'.tr() : null,
                     ),
                   ),
                 ],
@@ -127,7 +129,7 @@ class _LoadStockScreenState extends ConsumerState<LoadStockScreen> {
                 icon: const Icon(Icons.add_shopping_cart),
                 label: stockState.isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('වාහනයට ඇතුළත් කරන්න (Add to Vehicle)'),
+                    : Text('add_to_vehicle'.tr()),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   backgroundColor: Colors.blue,

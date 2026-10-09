@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,7 +15,7 @@ class DashboardScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MaaluPOS Dashboard'),
+        title: Text('dashboard_title'.tr()),
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         actions: [
@@ -35,7 +36,7 @@ class DashboardScreen extends ConsumerWidget {
               children: [
                 Expanded(
                   child: ActionCard(
-                    title: 'උදේ තොග පටවන්න',
+                    title: 'load_stock'.tr(),
                     icon: Icons.unarchive,
                     color: Colors.orange.shade700,
                     onTap: () {
@@ -51,7 +52,7 @@ class DashboardScreen extends ConsumerWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ActionCard(
-                    title: 'අලුත් බිලක් හදමු',
+                    title: 'new_bill'.tr(),
                     icon: Icons.receipt_long,
                     color: Colors.green.shade700,
                     onTap: () {
@@ -62,9 +63,9 @@ class DashboardScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 25),
 
-            const Text(
-              'අද දවසේ වාහනයේ ඇති තොගය (Today Stock)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Text(
+              'today_stock_title'.tr(),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
 
@@ -72,14 +73,14 @@ class DashboardScreen extends ConsumerWidget {
             todayStockAsync.when(
               data: (stockList) {
                 if (stockList.isEmpty) {
-                  return const Card(
+                  return Card(
                     child: Padding(
-                      padding: EdgeInsets.all(20.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Center(
                         child: Text(
-                          'අද දිනට තවම වාහනයට මාළු පටවා නැත.\n"උදේ තොග පටවන්න" බටන් එක ක්ලික් කරන්න.',
+                          'empty_stock_message'.tr(),
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.grey),
                         ),
                       ),
                     ),
@@ -91,7 +92,7 @@ class DashboardScreen extends ConsumerWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: stockList.length,
-                    separatorBuilder: (_, __) => const Divider(height: 1),
+                    separatorBuilder: (context, index) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final item = stockList[index];
                       return ListTile(
@@ -104,14 +105,14 @@ class DashboardScreen extends ConsumerWidget {
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                          'ගැනුම් මිල: Rs. ${item.costPricePerKg} /kg',
+                          'cost_price_label_format'.tr(args: [item.costPricePerKg.toString()]),
                         ),
                         trailing: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              'ඉතිරි: ${item.currentKg} Kg',
+                              'remaining_format'.tr(args: [item.currentKg.toString()]),
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -119,7 +120,7 @@ class DashboardScreen extends ConsumerWidget {
                               ),
                             ),
                             Text(
-                              'පටැවූ: ${item.loadedKg} Kg',
+                              'loaded_format'.tr(args: [item.loadedKg.toString()]),
                               style: const TextStyle(
                                 fontSize: 12,
                                 color: Colors.grey,
@@ -133,7 +134,7 @@ class DashboardScreen extends ConsumerWidget {
                 );
               },
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (e, _) => Text('Error: $e'),
+              error: (e, _) => Text('${'error'.tr()}: $e'),
             ),
           ],
         ),

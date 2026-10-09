@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -8,13 +9,21 @@ import 'features/dashboard/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
 
   await Supabase.initialize(
     url: 'https://kldidqjxqnpuvcyrlnig.supabase.co',
     publishableKey: 'sb_publishable_BeYv97_0M6trlcVbwa-kHQ_1PixGEWy',
   );
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('si'), Locale('ta')],
+      path: 'assets/translations',
+      fallbackLocale: const Locale('en'),
+      child: const ProviderScope(child: MyApp()),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -23,7 +32,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fish Distributor App',
+      title: 'app_title'.tr(),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
@@ -50,7 +63,7 @@ class AuthGate extends ConsumerWidget {
       },
       loading: () =>
           const Scaffold(body: Center(child: CircularProgressIndicator())),
-      error: (e, trace) => Scaffold(body: Center(child: Text('Error: $e'))),
+      error: (e, trace) => Scaffold(body: Center(child: Text('${'error'.tr()}: $e'))),
     );
   }
 }

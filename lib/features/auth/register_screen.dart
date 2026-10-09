@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,7 +22,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   @override
   void dispose() {
     _nameController.dispose();
-
     _phoneController.dispose();
     _businessController.dispose();
     _emailController.dispose();
@@ -42,15 +42,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           );
 
       if (mounted) {
-        ref;
         final state = ref.read(authControllerProvider);
         if (state.hasError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('ලියාපදිංචි වීම අසාර්ථකයි: ${state.error}')),
+            SnackBar(content: Text('${'register_failed'.tr()}: ${state.error}')),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ලියාපදිංචි වීම සාර්ථකයි!')),
+            SnackBar(content: Text('register_success'.tr())),
           );
           Navigator.of(context).pop();
         }
@@ -63,7 +62,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final authState = ref.watch(authControllerProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('MaaluPOS ගිණුමක් හදමු')),
+      appBar: AppBar(title: Text('create_account_title'.tr())),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Form(
@@ -73,59 +72,59 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  labelText: 'ඔබගේ සම්පූර්ණ නම',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'full_name_label'.tr(),
+                  prefixIcon: const Icon(Icons.person),
+                  border: const OutlineInputBorder(),
                 ),
-                validator: (v) => v!.isEmpty ? 'කරුණාකර නම ඇතුළත් කරන්න' : null,
+                validator: (v) => v!.isEmpty ? 'full_name_empty_error'.tr() : null,
               ),
               const SizedBox(height: 15),
               TextFormField(
                 controller: _businessController,
-                decoration: const InputDecoration(
-                  labelText: 'ව්‍යාපාරයේ/වෑන් රථයේ නම',
-                  prefixIcon: Icon(Icons.store),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'business_name_label'.tr(),
+                  prefixIcon: const Icon(Icons.store),
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    v!.isEmpty ? 'කරුණාකර ව්‍යාපාරයේ නම ඇතුළත් කරන්න' : null,
+                    v!.isEmpty ? 'business_name_empty_error'.tr() : null,
               ),
               const SizedBox(height: 15),
               TextFormField(
                 controller: _phoneController,
                 keyboardType: TextInputType.phone,
-                decoration: const InputDecoration(
-                  labelText: 'දුරකථන අංකය',
-                  prefixIcon: Icon(Icons.phone),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'phone_number_label'.tr(),
+                  prefixIcon: const Icon(Icons.phone),
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    v!.isEmpty ? 'කරුණාකර දුරකථන අංකය ඇතුළත් කරන්න' : null,
+                    v!.isEmpty ? 'phone_empty_error'.tr() : null,
               ),
               const SizedBox(height: 15),
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'ඊමේල් ලිපිනය (Email)',
-                  prefixIcon: Icon(Icons.email),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'email_label'.tr(),
+                  prefixIcon: const Icon(Icons.email),
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) =>
-                    v!.isEmpty ? 'කරුණාකර valid email එකක් දාන්න' : null,
+                    v!.isEmpty ? 'email_invalid_error'.tr() : null,
               ),
               const SizedBox(height: 15),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'මුරපදය (Password)',
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  labelText: 'password_label'.tr(),
+                  prefixIcon: const Icon(Icons.lock),
+                  border: const OutlineInputBorder(),
                 ),
                 validator: (v) => v!.length < 6
-                    ? 'මුරපදයට අවම වශයෙන් අකුරු 6ක් තියෙන්න ඕන'
+                    ? 'password_length_error'.tr()
                     : null,
               ),
               const SizedBox(height: 25),
@@ -138,9 +137,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 ),
                 child: authState.isLoading
                     ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text(
-                        'ලියාපදිංචි වන්න (Start 3 Months Free Trial)',
-                        style: TextStyle(fontSize: 16),
+                    : Text(
+                        'register_button'.tr(),
+                        style: const TextStyle(fontSize: 16),
                       ),
               ),
             ],

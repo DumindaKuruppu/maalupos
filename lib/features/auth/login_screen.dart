@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,7 +37,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         final state = ref.read(authControllerProvider);
         if (state.hasError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Login අසාර්ථකයි: ${state.error}')),
+            SnackBar(content: Text('${'login_failed'.tr()}: ${state.error}')),
           );
         }
       }
@@ -59,44 +60,44 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               children: [
                 const Icon(Icons.phishing, size: 80, color: Colors.blue),
                 const SizedBox(height: 10),
-                const Text(
-                  'MaaluPOS',
+                Text(
+                  'app_title'.tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.blue,
                   ),
                 ),
                 const SizedBox(height: 5),
-                const Text(
-                  'මාළු බෙදාහරින්නන්ගේ කළමනාකරණ පද්ධතිය',
+                Text(
+                  'subtitle_desc'.tr(),
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 35),
                 TextFormField(
                   controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    labelText: 'ඊමේල් ලිපිනය (Email)',
-                    prefixIcon: Icon(Icons.email),
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'email_label'.tr(),
+                    prefixIcon: const Icon(Icons.email),
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (v) =>
-                      v!.isEmpty ? 'කරුණාකර Email එක ඇතුළත් කරන්න' : null,
+                      v!.isEmpty ? 'email_empty_error'.tr() : null,
                 ),
                 const SizedBox(height: 15),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: 'මුරපදය (Password)',
-                    prefixIcon: Icon(Icons.lock),
-                    border: OutlineInputBorder(),
+                  decoration: InputDecoration(
+                    labelText: 'password_label'.tr(),
+                    prefixIcon: const Icon(Icons.lock),
+                    border: const OutlineInputBorder(),
                   ),
                   validator: (v) =>
-                      v!.isEmpty ? 'කරුණාකර Password එක ඇතුළත් කරන්න' : null,
+                      v!.isEmpty ? 'password_empty_error'.tr() : null,
                 ),
                 const SizedBox(height: 25),
                 ElevatedButton(
@@ -108,9 +109,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   child: authState.isLoading
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          'ඇතුළු වන්න (Login)',
-                          style: TextStyle(fontSize: 16),
+                      : Text(
+                          'login_button'.tr(),
+                          style: const TextStyle(fontSize: 16),
                         ),
                 ),
                 const SizedBox(height: 15),
@@ -120,7 +121,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       MaterialPageRoute(builder: (_) => const RegisterScreen()),
                     );
                   },
-                  child: const Text('නව ගිණුමක් හදමු (Register Here)'),
+                  child: Text('register_here'.tr()),
                 ),
               ],
             ),
